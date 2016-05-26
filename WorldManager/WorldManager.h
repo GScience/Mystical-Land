@@ -1,22 +1,10 @@
 #pragma once
 
-#include "PositionManager.h"
-
-#include <unordered_map>
 #include <string>
-#include <windows.h>
-
-class block;
-class blockType;
 
 using std::string;
 
 typedef void(*blockCall)(const unsigned __int16& BlockData);
-
-extern std::unordered_map<string, blockType> BlockMap;
-
-void				addBlock	(const blockType& BlockType, string BlockName);
-const blockType&	getBlockType(string BlockName);
 
 class blockType
 {
@@ -28,9 +16,9 @@ class blockType
 	//Render Infomation
 	blockCall renderCall;
 public:
-	blockType::blockType(string BlockName, blockCall renderCall) :BlockName(BlockName),renderCall(renderCall) {}
+	blockType::blockType(string BlockName, blockCall renderCall) :BlockName(BlockName), renderCall(renderCall) {}
 
-	blockType() = default;
+	blockType();
 };
 
 class block
@@ -39,12 +27,15 @@ class block
 	const blockType&	BlockType;
 
 	void renderFallCall() { BlockType.renderCall(this->BlockData); }
-
+	
 public:
-	block(const blockType& BlockType, __int16 BlockSubID, char Light) :BlockData((BlockSubID << 4) + Light), BlockType(BlockType) {}
+	block(const blockType& BlockType, __int16 BlockSubID, char Light);
 
 	const blockType& getBlockType() { return BlockType; }
 
 	uint16_t	getLight() { return BlockData >> 4; }
 	uint16_t	getBlockSubID() { return (BlockData << 12) >> 12; }
 };
+
+void	addBlock(const blockType& BlockType, std::string BlockName);
+const	blockType& getBlockType(std::string BlockName);

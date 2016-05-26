@@ -27,6 +27,7 @@
     <ClInclude Include="PositionManager.h">
       <Filter>PositionManager</Filter>
     </ClInclude>
+    <ClInclude Include="WorldManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp">
