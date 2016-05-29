@@ -1,22 +1,24 @@
 #pragma once
 
-#include "PositionManager.h"
+/**********************************************
+
+Base Head File!Don't Base On Anything
+
+***********************************************/
 
 #include <unordered_map>
 #include <string>
-#include <windows.h>
 
 class block;
 class blockType;
 
 using std::string;
 
-typedef void(*blockCall)(const unsigned __int16& BlockData);
+typedef void*(*blockCall)(const unsigned __int16& BlockData);
 
-extern std::unordered_map<string, blockType> BlockMap;
+extern std::unordered_map<string, blockType> BlockTypeMap;
 
-void				addBlock	(const blockType& BlockType, string BlockName);
-const blockType&	getBlockType(string BlockName);
+void	addBlock	(const blockType BlockType, string BlockName);	//Add a new blockType to BlockTypeMap
 
 class blockType
 {
@@ -35,16 +37,27 @@ public:
 
 class block
 {
-	uint16_t			BlockData;
-	const blockType&	BlockType;
+public:
+	const blockType*	BlockType;
 
-	void renderFallCall() { BlockType.renderCall(this->BlockData); }
+private:
+	uint16_t*	BlockData;
+
+	void* renderCall() { return BlockType->renderCall(*BlockData); }
+
+	block(const blockType& BlockType, uint16_t* BlockData) :BlockData(BlockData), BlockType(&BlockType) {}
 
 public:
-	block(const blockType& BlockType, __int16 BlockSubID, char Light) :BlockData((BlockSubID << 4) + Light), BlockType(BlockType) {}
 
-	const blockType& getBlockType() { return BlockType; }
+	block(string BlockTypeName, uint16_t BlockSubID, char Light) :BlockData(new uint16_t(BlockSubID << 4) + Light), BlockType(&BlockTypeMap[BlockTypeName]) {}
 
-	uint16_t	getLight() { return BlockData >> 4; }
-	uint16_t	getBlockSubID() { return (BlockData << 12) >> 12; }
+	const blockType& getMaterial() { return *BlockType; }
+
+	uint16_t	getLight() { return *BlockData >> 4; }
+	uint16_t	getBlockSubID() { return (*BlockData << 12) >> 12; }
+
+	void setMaterial(string BlockTypeName) 
+	{
+		BlockType = &BlockTypeMap[BlockTypeName];
+	}
 };

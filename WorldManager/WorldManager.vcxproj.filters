@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="MapManager">
-      <UniqueIdentifier>{0cce0dc8-73ba-4dcf-9904-483a968e8dc7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ChunkManager">
       <UniqueIdentifier>{d24bd61f-8d93-4493-8a54-416079008152}</UniqueIdentifier>
     </Filter>
@@ -15,9 +12,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Mystical Land\MapManager.h">
-      <Filter>MapManager</Filter>
-    </ClInclude>
     <ClInclude Include="ChunkManager.h">
       <Filter>ChunkManager</Filter>
     </ClInclude>

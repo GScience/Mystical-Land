@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Mystical Land\MapManager.h" />
     <ClInclude Include="BlockManager.h" />
     <ClInclude Include="ChunkManager.h" />
     <ClInclude Include="PositionManager.h" />
@@ -94,7 +93,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" "$(SolutionDir)WorldManager.lib"</Command>
+      <Command>copy "$(TargetPath)" "$(SolutionDir)WorldManager.lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +109,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" "$(SolutionDir)WorldManager.lib"</Command>
+      <Command>copy "$(TargetPath)" "$(SolutionDir)WorldManager.lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

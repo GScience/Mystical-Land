@@ -1,34 +1,103 @@
 #pragma once
 
-#include "ChunkManager.h"
+/**********************************************
 
-//区块位置类
-struct chunk_location
+	Base Head File!Don't Base On Anything
+
+***********************************************/
+
+//Chunk position
+class chunk_location
 {
-	__int32 ChunkX;
-	__int32 ChunkY;
-	__int32 ChunkZ;
+	__int64 ChunkX;
+	__int64 ChunkY;
+	__int64 ChunkZ;
+
+public:
+	chunk_location(__int64 ChunkX, __int64 ChunkY, __int64 ChunkZ) :ChunkX(ChunkX), ChunkY(ChunkY), ChunkZ(ChunkZ) { }
+
+	inline __int64 getChunkX()
+	{
+		return ChunkX;
+	}
+	inline __int64 getChunkY()
+	{
+		return ChunkY;
+	}
+	inline __int64 getChunkZ()
+	{
+		return ChunkZ;
+	}
 };
 
-//位置类
+//Block position
+class block_location
+{
+	//in chunk position
+	unsigned int X : 4;
+	unsigned int Y : 4;
+	unsigned int Z : 4;
+
+	//chunk position
+	chunk_location ChunkLocation;
+
+public:
+	block_location(short Location, chunk_location ChunkLocation) :Location(Location), ChunkLocation(ChunkLocation) {}
+
+	chunk_location gelChunkLocation()
+	{
+		return ChunkLocation;
+	}
+};
+
+//Basic Locaiton
 class location
 {
-	//所在Chunk坐标
-	chunk_location ChunkLocation;
-	
-	//相对于Chunk的位置（记Chunk的一角为原点）
-	double InChunkX;
-	double InChunkY;
-	double InChunkZ;
+	double X = 0.0;
+	double Y = 0.0;
+	double Z = 0.0;
+
 public:
-	//获取位置
-	long double getX();
-	long double getY();
-	long double getZ();
+	location() = default;
+	location(const double& X, const double& Y, const double& Z) :X(X), Y(Y), Z(Z) {}
 
-	//移动
-	void move(long double, long double, long double);
-	void moveTo(long double, long double, long double);
+	//Get location
+	double getX()
+	{
+		return X;
+	}
+	double getY()
+	{
+		return Y;
+	}
+	double getZ()
+	{
+		return Z;
+	}
 
-	//所在Chunk位置
+	//move
+	void move(const double& XMov, const double& YMov, const double& ZMov)
+	{
+		X += XMov;
+		Y += YMov;
+		Z += ZMov;
+	}
+	void moveTo(const double& XPos, const double& YPos, const double& ZPos)
+	{
+		X = XPos;
+		Y = YPos;
+		Z = ZPos;
+	}
+
+	//convern
+	operator chunk_location()
+	{
+		return chunk_location(	X > 0 ? (__int64)(X / 16) : (__int64)(X / 16) - 1,
+								Y > 0 ? (__int64)(Y / 16) : (__int64)(Y / 16) - 1,
+								Z > 0 ? (__int64)(Z / 16) : (__int64)(Z / 16) - 1);
+	}
+	operator block_location()
+	{
+		return block_location(0, (chunk_location)*this);
+	}
 };
